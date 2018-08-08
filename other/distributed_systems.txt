@@ -1,0 +1,52 @@
+scaling out - add more hardware 
+	multiple servers
+	multiple locations 
+
+
+scale up - make each server count 
+
+
+web tier - django. 
+
+cassandra
+postgressql
+memcache
+rabbitmq
+celery. 
+
+storage vs computing -
+storage - eventual consistency across data centers
+compute - based on traffic per needs. 
+
+postgres:
+write to master..batch writes 
+read from replica - 
+
+user feeds - cassandra. no master - replicas.
+
+memcache - high performance key value - millions operations per second..sensitive to network condition. 
+so can’t do cross region..? no global consistency..so in affect its used locally. 
+
+denormalize database.. likes example
+memcache lease..?
+
+database ACID properties
+pods
+*** How do you ensure disaster doesn’t affect service. 
+- multiple regions save you - example s3 outage. 
+CDN - get user location and serve CDN urls.  
+
+
+SCALE UP:
+write good code. less cpu usage. serve more users per server. 
+Monitor -> analyze -> Optimize. 
+cpu usage - monitor and alert. match with event logs. 
+show by feature / log / monitor by feature too. AB testing allows time to fix issues. 
+python cprofile 
+cython
+
+reduce memory usage - 
+reduce code being run - optimize mode. remove dead code. 
+configs - shared memory
+
+network latency - 
