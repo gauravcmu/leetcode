@@ -15,9 +15,9 @@ Explanation: There are 4 prime numbers less than 10, they are 2, 3, 5, 7.
 Primality check:
 - Treat 0-3 with if checks. (actually redundant due to caller checking)
 - Check if divisible by 2 or 3 
-- From j = 5 (6k-1) to j*j <=n - check if j is a factor. 
-	- for 6k-1 => increment j by 6
-	- for 6k+1 - use j+2 as j already 6k-1.   
+- From j = 5 (6k-1) to `j*j <=n` - check if j is a factor. 
+	- for `6k-1` => increment j by 6
+	- for `6k+1` - use j+2 as j already `6k-1`.   
 
 ### Mistakes - 
 - treating 1 as prime
@@ -35,5 +35,5 @@ Output:
 Expected:
 1229
 
-25, 121, 289, 529, 841, 1681, 2209, 2809, 3481, 5041, 6889, 7921 
-- ^ treated as prime - bug was checking j*j < n instead of j*j<=n 
+`25, 121, 289, 529, 841, 1681, 2209, 2809, 3481, 5041, 6889, 7921 `
+- ^ treated as prime - bug was checking `j*j < n` instead of `j*j<=n`
