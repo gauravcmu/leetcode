@@ -1,3 +1,6 @@
+
+Problem statement
+===
 Count the number of prime numbers less than a non-negative number, n.
 
 Example:
@@ -6,7 +9,7 @@ Input: 10
 Output: 4
 Explanation: There are 4 prime numbers less than 10, they are 2, 3, 5, 7.
 
-Approach to solve:
+## Approach to solve:
 - Treat 0, 1, 2, 3 as special cases, return 0 and 1 respectively.
 - From 5 onwards - check odd numbers for primality. 
 Primality check:
@@ -16,12 +19,12 @@ Primality check:
 	- for 6k-1 => increment j by 6
 	- for 6k+1 - use j+2 as j already 6k-1.   
 
-Mistakes - 
+### Mistakes - 
 - treating 1 as prime
 - 2 and 3 are primes. 
 - forgetting check for divisibility by 2 and by 3. 
-- 
-optimize - 
+
+**optimize**  
 - can loop over only odd numbers.  
 
 Tests that failed:
