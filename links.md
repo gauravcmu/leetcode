@@ -1,3 +1,6 @@
+primality testing explained:
+https://www.youtube.com/watch?v=AaNUzEHiDpI
+
 generate parenthesis
 https://www.youtube.com/watch?v=LxwiwlUDOk4
 
