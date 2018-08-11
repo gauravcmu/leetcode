@@ -19,13 +19,15 @@ func cachedNumSquares(n int, cache map[int]int) int {
     if v, ok := cache[n]; ok {
         return v
     } 
-    //biggest perfect square
+    //biggest perfect square root
     bps := int(math.Sqrt(float64(n)))
     val := bps
-    minSum := n 
+    minSum := n  // 1 added n times. 
     sum := 0
     if val != 0 {
         for (val >= 1) {
+	    //go from bggest perfect square to 1 and minimize sum 
+	    //recursively do func(perfect square) + func (n-perfectS*perfectS)
             sum = cachedNumSquares(n - val*val, cache) + 1 
             if sum < minSum {
                 minSum = sum
