@@ -1,7 +1,7 @@
 # Problem statement
 
 Rotate a n x n matrix clockwise. (or counter clockwise)
-
+```
 [ 
   1, 2, 3 
   4, 5, 6 
@@ -15,7 +15,7 @@ to
    8, 5, 2 
    9, 6, 3 
 ]
-
+```
 ## Solution approach:
 
 ### Clockwise rotation by 90 degrees:
