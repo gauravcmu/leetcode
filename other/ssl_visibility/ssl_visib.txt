@@ -1,0 +1,132 @@
+
+ * Cache for outgoing dst connection SSL sessions.
+ *
+ * key: dynbuf_t *  original destination IP address, port and SNI string
+ * val: dynbuf_t *  ASN.1 serialized SSL_SESSION
+
+ssl_wildcardify()
+test.google.com -> *.google.com
+
+
+/*
+ * Create a fake X509v3 certificate, signed by the provided CA,
+ * based on the original certificate retrieved from the real server.
+ * The returned certificate is created using X509_new() and thus must
+ * be freed by the caller using X509_free().
+ * The optional argument extraname is added to subjectAltNames if provided.
+ */
+
+ssl_x509_forge() forge a cert given original cert, ca cert
+
+	- Get subject name from original cert
+	- issuer name from ca cert. 
+
+	- create new empty cert - 
+	- copy issuer name and subject names. 
+	- copy random value from origcert. 
+- set a few X509v3 extension - 
+Why do we need to copy random?
+
+In TLS, the master secret is used with server and client random bytes in a PRF function to calculate a key block.
+Then the key block is divided to provide six keys used for different operations :
+2 encryption keys
+2 MAC keys
+2 IV (when needed by encryption primitive)
+When resuming a session, the same master key is used to generate key block. So use of client and server random bytes ensures that key block will be different in every handshake.
+ - Now X509_sign() with ca cert and ca key and md digest. X509_sign() signs the certificate x using the private key pkey and the message digest md and sets the signature in x. X509_sign_ctx() also signs the certificate x but uses the parameters contained in digest context ctx.
+
+		case NID_md5WithRSAEncryption:
+			md = EVP_md5();
+
+pxy_srccert_create(pxy_conn_ctx_t *ctx)
+	- lookup certificate based on orig cert from cache.
+	not found, then 
+- forge certificate
+	- cache it. 
+/*
+ * Create new SSL context for the incoming connection, based on the original
+ * destination SSL certificate.
+ * Returns NULL if no suitable certificate could be found.
+ */
+pxy_srcssl_create(given original ssl)
+	- get peer certificate. 
+	- create src certificate. 
+	sslctx = pxy_srcsslctx_create()
+SSL *ssl = SSL_new(sslctx);
+
+
+/*
+ * Callback for accept events on the socket listener bufferevent.
+ * Called when a new incoming connection has been accepted.
+ * Initiates the connection to the server.  The incoming connection
+ * from the client is not being activated until we have a successful
+ * connection to the server, because we need the server's certificate
+ * in order to set up the SSL session to the client.
+ * For consistency, plain TCP works the same way, even if we could
+ * start reading from the client while waiting on the connection to
+ * the server to connect.
+ */
+void
+pxy_conn_setup(evutil_socket_t fd,
+               struct sockaddr *peeraddr, int peeraddrlen,
+               pxy_thrmgr_ctx_t *thrmgr,
+               proxyspec_t *spec, opts_t *opts)
+HTTP filtering: 
+
+/*
+ * Filter a single line of HTTP request headers.
+ * Also fills in some context fields for logging.
+ *
+ * Returns NULL if the current line should be deleted from the request.
+ * Returns a newly allocated string if the current line should be replaced.
+ * Returns `line' if the line should be kept.
+ */
+static char *
+pxy_http_reqhdr_filter_line(const char *line, pxy_conn_ctx_t *ctx)
+
+/*
+ * Callback for read events on the up- and downstream connection bufferevents.
+ * Called when there is data ready in the input evbuffer.
+ */
+static void
+pxy_bev_readcb(struct bufferevent *bev, void *arg)
+
+(does http header handling / logging)
+
+--- DNS 
+https://www.youtube.com/watch?v=eSrC-7yeF7c
+https://www.youtube.com/watch?v=Advg2VAgao0
+
+TOP - man top:
+The first several lines of the top display show various global state.  All of the information is labeled.  Following is an alphabetical list of global
+     state fields and their descriptions.
+
+     CPU         Percentage of processor usage, broken into user, system, and idle components.  The time period for which these percentages are calculated
+                 depends on the event counting mode.
+
+     Disks       Number and total size of disk reads and writes.
+
+     LoadAvg     Load average over 1, 5, and 15 minutes.  The load average is the average number of jobs in the run queue.
+
+     MemRegions  Number and total size of memory regions, and total size of memory regions broken into private (broken into non-library and library) and shared
+                 components.
+
+     Networks    Number and total size of input and output network packets.
+
+     PhysMem     Physical memory usage, broken into wired, active, inactive, used, and free components.
+
+     Procs       Total number of processes and number of processes in each process state.
+
+     SharedLibs  Resident sizes of code and data segments, and link editor memory usage.
+
+     Threads     Number of threads.
+
+     Time        Time, in H:MM:SS format.  When running in logging mode, Time is in YYYY/MM/DD HH:MM:SS format by default, but may be overridden with accumula-
+                 tive mode.  When running in accumulative event counting mode, the Time is in HH:MM:SS since the beginning of the top process.
+
+     VirtMem     Total virtual memory, virtual memory consumed by shared libraries, and number of pageins and pageouts.
+
+     Swap        Swap usage: total size of swap areas, amount of swap space in use and amount of swap space available.
+
+
+
