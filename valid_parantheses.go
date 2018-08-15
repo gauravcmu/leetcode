@@ -18,6 +18,7 @@ func isCloseParan(value string) bool {
     return false 
 }
 
+//for the open and close string, find matching entry in paran array
 func findparan (open, cls string) bool {
     for _, paran := range paran {
         if (open  == paran[0])  && (cls == paran[1]){
@@ -40,11 +41,12 @@ func isValid(s string) bool {
             if (!notEmpty(&stack) || !findparan(peek(&stack), string(value))){
                 return false
             } else {
+                //value matches, pop and move to next
                 pop(&stack)
             }  
         }
     } 
-    
+    //stack should be empty by now else its not valid string
     return notEmpty(&stack) == false 
 }
 
