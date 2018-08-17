@@ -1,4 +1,4 @@
-primality testing explained:
+```primality testing explained:
 https://www.youtube.com/watch?v=AaNUzEHiDpI
 
 generate parenthesis
@@ -23,3 +23,7 @@ https://www.youtube.com/watch?v=AN0axYeLue0
 
 Diameter of binary tree:
 https://www.youtube.com/watch?v=zUgxaZApKWA
+
+Backtracking - N queens
+https://www.youtube.com/watch?v=WshpHyZIWRE
+```
