@@ -20,3 +20,6 @@ https://www.youtube.com/watch?v=54rMYC2pEtw
 
 Implement queue using stacks
 https://www.youtube.com/watch?v=AN0axYeLue0
+
+Diameter of binary tree:
+https://www.youtube.com/watch?v=zUgxaZApKWA
