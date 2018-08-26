@@ -29,4 +29,7 @@ https://www.youtube.com/watch?v=WshpHyZIWRE
 
 Factory Design pattern:
 https://www.youtube.com/watch?v=ub0DXaeV6hA
+
+Scalability Lecture:
+https://www.youtube.com/watch?v=-W9F__D3oY4
 ```
