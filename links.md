@@ -26,4 +26,7 @@ https://www.youtube.com/watch?v=zUgxaZApKWA
 
 Backtracking - N queens
 https://www.youtube.com/watch?v=WshpHyZIWRE
+
+Factory Design pattern:
+https://www.youtube.com/watch?v=ub0DXaeV6hA
 ```
