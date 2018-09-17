@@ -4,9 +4,11 @@ Given a binary tree, find the maximum path sum. The path may start and end at an
 Example:
 
 Input: Root of below tree
+```
        1
       / \
      2   3
+```
 Output: 6
 
 See below diagram for another example.
