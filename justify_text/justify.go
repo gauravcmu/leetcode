@@ -1,4 +1,3 @@
-
 import (
 	"fmt"
 	"strings"
@@ -29,8 +28,11 @@ func fullJustify(words []string, maxWidth int) []string {
 		}
 	}
 	if len(r) != 0 {
-		for i := 0; i < maxWidth-len(r); i++ {
+		fmt.Printf("-- %v:r len(r):%v \n", string(r), len(r))
+		l := maxWidth - len(r)
+		for i := 0; i < l; i++ {
 			r = append(r, ' ')
+			fmt.Printf("=== len of r == %v max %v i:%v\n", len(r), maxWidth, i)
 		}
 		res = append(res, string(r))
 	}
@@ -71,6 +73,10 @@ func justify(input string, maxWidth int) string {
 				diff--
 			}
 		}
+	}
+	for diff != 0 {
+		res = append(res, ' ')
+		diff--
 	}
 	fmt.Printf("input:[%v] res:[%v]\n", input, string(res))
 	return string(res)
