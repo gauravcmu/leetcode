@@ -1,0 +1,185 @@
+
+
+diff --git a/facebook/kclosest.go b/facebook/kclosest.go
+new file mode 100644
+index 0000000..b6b52a5
+--- /dev/null
++++ b/facebook/kclosest.go
+@@ -0,0 +1,29 @@
++import "sort"
++
++type info struct {
++	distance int
++	point    []int
++}
++
++func kClosest(points [][]int, K int) [][]int {
++	result := make([]info, 0)
++
++	for _, point := range points {
++		result = append(result, info{distance: findDistance(point), point: point})
++	}
++
++	sort.Slice(result, func(a, b int) bool {
++		return result[a].distance < result[b].distance
++	})
++
++	res := make([][]int, 0)
++
++	for _, r := range result {
++		res = append(res, r.point)
++	}
++	return res[:K]
++}
++
++func findDistance(point []int) int {
++	return point[0]*point[0] + point[1]*point[1]
++}
+\ No newline at end of file
+diff --git a/group_anagrams.go b/group_anagrams.go
+index 89e8d42..8796f85 100644
+--- a/group_anagrams.go
++++ b/group_anagrams.go
+@@ -1,26 +1,30 @@
+-import "sort"
++import (
++	"fmt"
++	"sort"
++)
++
+ func groupAnagrams(strs []string) [][]string {
+-    mapping := make(map[string][]string, 0)
+-    res := make([][]string, 0)
+-    for _, v := range strs {
+-	r := []rune(v)
+-	sort.Sort(sortRunes(r))
+-	if _, ok := mapping[string(r)]; ok {
+-		mapping[string(r)] = append(mapping[string(r)], v)
+-	} else {
+-		mapping[string(r)] = make([]string,0)
+-		mapping[string(r)] = append(mapping[string(r)], v)
++	mapping := make(map[string][]string, 0)
++	res := make([][]string, 0)
++	for _, v := range strs {
++		r := []rune(v)
++		sort.Sort(sortRunes(r))
++		if _, ok := mapping[string(r)]; ok {
++			mapping[string(r)] = append(mapping[string(r)], v)
++		} else {
++			mapping[string(r)] = make([]string, 0)
++			mapping[string(r)] = append(mapping[string(r)], v)
++		}
++
++		fmt.Printf("r:%v\n", string(r))
+ 	}
+-	
+-        fmt.Printf("r:%v\n", string(r))
+-    }
+ 
+-    for _, val := range mapping {
+-	res = append(res, val)
+-    } 
++	for _, val := range mapping {
++		res = append(res, val)
++	}
+ 
+-    fmt.Printf("%v\n", res)     
+-    return res
++	fmt.Printf("%v\n", res)
++	return res
+ }
+ 
+ type sortRunes []rune
+diff --git a/main.go b/main.go
+index 8041350..94c3f10 100644
+--- a/main.go
++++ b/main.go
+@@ -7,8 +7,61 @@ import (
+ 
+ func main() {
+ 	//initialize context 
+-
+ 	ctx := context.New() 
+ 
++	//return a list of all products
++	ctx.R.Get("/products/", func (){
++		products, err := ctx.MongoSession.Collection("products").find() 
++		if err != nil {
++			ctx.R.Error(500, "failed to find in DB")
++			return 
++		}
++
++		ctx.R.JSON(products)
++		} )
++
++	//return a product given an ID
++	ctx.R.Get("/products/:productid", func (){
++		productid := ctx.R.getparam("productid")
++		product, err := ctx.MongoSession.Collection("products").findById(productid)
++		if err != nil {
++			ctx.R.Error(500, "failed to find in DB")
++			return 
++		}
++
++		ctx.R.JSON(product)
++		})
++
++		//return a list of all products
++	ctx.R.Get("/customer/", func (){
++		products, err := ctx.MongoSession.Collection("customer").find() 
++		if err != nil {
++			ctx.R.Error(500, "failed to find in DB")
++			return 
++		}
++
++		ctx.R.JSON(products)
++		} )
++
++	//return a product given an ID
++	ctx.R.Get("/customer/:customerid", func (){
++		productid := ctx.R.getparam("productid")
++		product, err := ctx.MongoSession.Collection("products").findById(productid)
++		if err != nil {
++			ctx.R.Error(500, "failed to find in DB")
++			return 
++		}
++
++		ctx.R.JSON(product)
++		})
++
++	ctx.R.POST("/customer", func() {
++		//read the body and parse into customer object (models.customer)
++		customer 
++		})
++
++	
++	ctx.R.router() 
++
+ }
+ 
+diff --git a/moveZeroes/README.md b/moveZeroes/README.md
+index e69de29..b5a5fe6 100644
+--- a/moveZeroes/README.md
++++ b/moveZeroes/README.md
+@@ -0,0 +1,21 @@
++Given an array nums, write a function to move all 0's to the end of it while maintaining the relative order of the non-zero elements.
++
++Example:
++
++Input: [0,1,0,3,12]
++Output: [1,3,12,0,0]
++Note:
++
++You must do this in-place without making a copy of the array.
++Minimize the total number of operations.
++
++## Solution
++===========
++
++Iterate over the array and maintain index to write at:
++	- Now write non-zero element at index_to_write_at
++		- increment index_to_write_at
++	- just move to next element if it is zero. 
++Once you have done this loop - loop from index_to_write_at to end of the array
++	- set each element to zero. 
++
