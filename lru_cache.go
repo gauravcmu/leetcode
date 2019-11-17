@@ -9,7 +9,6 @@ type LRUCache struct {
     List *list.List 
     Hash map[int]*list.Element
     Capacity int 
-    Last *list.Element
 }
 
 
