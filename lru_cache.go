@@ -1,51 +1,57 @@
 import "container/list"
 
-type element struct {
-    Key int 
-    Value int 
-}
-
 type LRUCache struct {
-    List *list.List 
-    Hash map[int]*list.Element
-    Capacity int 
+    nodelist * list.List 
+    hashmap map[int]*list.Element 
+    capacity int 
 }
 
+type info struct {
+    value int 
+    key int 
+}
 
 func Constructor(capacity int) LRUCache {
-    l:= list.New() 
-    h:= make(map[int]*list.Element, 0)
-    return LRUCache{List: l, Hash: h, Capacity: capacity}
+    return LRUCache{
+        nodelist: list.New(),
+        hashmap: make(map[int]*list.Element, capacity),
+        capacity: capacity, 
+    }
 }
 
 
 func (this *LRUCache) Get(key int) int {
-    if e, ok := this.Hash[key]; ok  {
-        this.List.MoveToBack(e)
-        return e.Value.(element).Value
-    }    
+    if value, ok := this.hashmap[key]; ok {
+        //move this node to the back. 
+        this.nodelist.MoveToBack(value)
+        return value.Value.(info).value 
+    }
     return -1 
 }
 
-/*
-["LRUCache","get","put","get","put","put","get","get"]
-[[2],        [2], [2,6], [1], [1,5], [1,2],[1],  [2]]
-              -1          -1              
-*/
 
 func (this *LRUCache) Put(key int, value int)  {
-    if e, ok := this.Hash[key]; ok  {
-        e.Value = element{Key: key, Value:value} 
-        this.List.MoveToBack(e)
-        return 
-    }    
-
-    if this.List.Len() >= this.Capacity {
-        //LRU is at the front of the list
-        delete(this.Hash, this.List.Front().Value.(element).Key) 
-        this.List.Remove(this.List.Front())
-    } 
+     if e, ok := this.hashmap[key]; ok {
+        e.Value = info {key:key, value:value}
+        this.nodelist.MoveToBack(e)
+         return 
+     }
     
-    e := this.List.PushBack(element{Key: key, Value:value})
-    this.Hash[key] = e 
+    if this.capacity <= this.nodelist.Len() {
+        //reached capacity 
+        element := this.nodelist.Front()
+        this.nodelist.Remove(this.nodelist.Front())
+        delete(this.hashmap, element.Value.(info).key) 
+    }
+    
+    e := this.nodelist.PushBack(info{value: value, key: key})
+    this.hashmap[key] = e 
 }
+
+
+/**
+ * Your LRUCache object will be instantiated and called as such:
+ * obj := Constructor(capacity);
+ * param_1 := obj.Get(key);
+ * obj.Put(key,value);
+ */
