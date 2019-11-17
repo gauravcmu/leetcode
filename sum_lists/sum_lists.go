@@ -6,69 +6,79 @@
  * }
  */
 func addTwoNumbers(l1 *ListNode, l2 *ListNode) *ListNode {
-    var l3 *ListNode
-    var units int = 0 
-    var carry int = 0 
+    var result *ListNode = nil 
+    carry := 0 
+    value := 0 
+    
     for {
-        if l1 == nil || l2 == nil  {
-            break
+        if l1 == nil || l2 == nil {
+            break 
+        } else {
+            sum :=  (carry + l1.Val + l2.Val)
+            if sum >= 10 {
+                value = (sum)%10
+                carry = (sum)/10   
+            } else {
+                value = sum  
+            }
         }
-
-        units = (carry + l1.Val + l2.Val) % 10
-        carry = (carry + l1.Val + l2.Val) / 10 
-        addNode(&l3, units)
+        result = addNode(result, value)
         l1 = l1.Next
-        l2 = l2.Next 
+        l2 = l2.Next
+    }
+
+    if l1 == nil {
+        for l2 != nil {
+            sum := carry + l2.Val 
+            if sum >= 10 {
+                value = (sum)%10
+                carry = (sum)/10
+            } else {
+                value = sum
+            }
+
+            result = addNode(result, value)
+            l2 = l2.Next
+        }
     }
     
-    if l1 == nil {
-        for {
-            if l2 == nil {
-                break
-            }
-            
-            units = (l2.Val + carry)%10          
-            addNode(&l3, units)
-            carry = (l2.Val+carry)/10
-            l2 = l2.Next
-        } 
-    } else if l2 == nil {
-         for {
-            if l1 == nil {
-                break
-            }
-            units = (l1.Val + carry)%10          
-            addNode(&l3, units)
-            carry = (l1.Val+carry)/10
-            l1 = l1.Next
+    if l2 == nil {
+        for l1 !=nil {
+            sum := carry + l1.Val 
+            if sum >= 10 {
+                value = (sum)%10
+                carry = (sum)/10
+            } else {
+                value = sum
+            } 
+           result = addNode(result, value)
         }
+
     }
+    
     if carry != 0 {
-        addNode(&l3, carry)
+        result = addNode(result, carry)
     }
-    return l3 
+    
+    return result     
 }
 
-func addNode(l3 **ListNode, value int) {
-    if *l3 == nil {
-        *l3 = &ListNode {
-            Val: value, 
-            Next: nil, 
-        }
-        return 
+func addNode(list *ListNode, value int) *ListNode {     
+    fmt.Printf("adding value:%v to list:%+v\n", value, list)
+    node := ListNode {
+        Val: value, 
+        Next: nil, 
+    } 
+    
+    if list == nil {
+        return &node
     }
     
-    temp := *l3 
-    for {
-        if temp.Next == nil {
-            temp.Next = &ListNode {
-            Val: value, 
-            Next: nil ,
-            }
-            return
-        } else {
-                temp = temp.Next
-            }
-        }
-        return 
+    temp := list 
+    for ; temp.Next != nil; temp = temp.Next {
+    }
+    temp.Next = &node 
+    
+    fmt.Printf("Added: %v to list: %+v\n", value, list)  
+    return list 
 }
