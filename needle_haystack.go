@@ -1,48 +1,33 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 func main() {
-	fmt.Printf("result: %v", grep("aaabcdddbbddddabcdefghi", "abc"))
+	haystack := "aabcdeflmnaaaabcpqr"
+	needle := "abc"
+	
+	fmt.Printf("%v", find(haystack, needle))
+	
+	fmt.Printf("%v", find("abcd", "zy"))
+	
+	fmt.Printf("%v", find("abcdabcd", "abcd"))
 }
 
-func grep(haystack, needle string) []int {
-	i := 0
-	j := 0
-
-	start_index := 0
+func find(haystack, needle string) []int {
 	result := make([]int, 0)
-	count_match := 0
-
-	for i, j = start_index, 0; i < len(haystack) && j < len(needle); {
-		if needle[j] == haystack[i] {
-			count_match++
-			if count_match == len(needle) {
-				fmt.Printf("Add to result %v\n", start_index)
-				result = append(result, start_index)
-				i++
-				j = 0
-				start_index = i
-				count_match = 0
-			} else {
-				// match
-				i++
-				j++
+	
+	for i:=0; i < len(haystack);i++ {
+		for j:=0; j < len(needle); j++ {
+			if needle[j] != haystack[i+j] {
+				break
+			} else if j == len(needle)-1 {
+				//found a solution. 
+				result = append(result, i)
 			}
-		} else {
-			if count_match == 0 {
-				if i+1 == len(haystack) {
-					return result
-				} else {
-					i++
-				}
-			}
-			start_index = i
-			j = 0
-			count_match = 0
 		}
 	}
+	return result 
 
-	return result
 }
-
