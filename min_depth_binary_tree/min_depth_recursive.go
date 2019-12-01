@@ -5,37 +5,49 @@
  *     Left *TreeNode
  *     Right *TreeNode
  * }
- 
-    1 + min(1, 2)
-    md(3)
-        1 ld- md(9)
-           0 - md(nil)
-        2- rd - md(20) 
-            1 - md(15)
-               0 - md(nil)
-            1- md(7)   
-               0 - md(nil)
  */
 func minDepth(root *TreeNode) int {
-    // root min left / min right
     if root == nil {
-        return 0 
-    } 
-    
-    //post order traversal. left right root.
-    ld := minDepth(root.Left)
-    rd := minDepth(root.Right)
-    
-    // 1 + min (ld, rd)
-    if ld !=0 && rd != 0 {
-        return min(ld, rd) + 1
+        return 0
     }
-        return ld + rd + 1
+    return helper(root)
 }
 
-func min (a, b int) int {
-    if a < b {
-        return a
+
+/*
+    nil root - return max value as we do not want this to be calculated in min from the caller. 
+    if leaf node - than return 1. 
+    else - return min(left / right subtree depth) + 1
+*/
+func helper(root * TreeNode) int {
+    if root == nil {
+        return math.MaxInt32 
     }
-    return b
+    
+    if root.Left == nil && root.Right == nil {
+        return 1
+    }
+    
+    lmin := helper(root.Left)
+    rmin := helper(root.Right)
+    
+    return min(lmin, rmin) + 1
 }
+
+func min(a, b int) int {
+    if a < b {
+        return a 
+    }
+    return b 
+}
+
+/*
+helper(3)
+    helper(9)
+        returns 1 
+    helper(20) - return 2 
+        helper(15)
+            returns 1 
+        helper(7)
+            returns 1   
+*/
