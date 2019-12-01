@@ -7,38 +7,36 @@
  * }
  */
 import "math"
-
 func maxPathSum(root *TreeNode) int {
-	result := math.MinInt32
-	maxPathSumHelper(root, &result)
-	return result
+    t := math.MinInt32
+    helper(root, &t) 
+    return t 
 }
-func maxPathSumHelper(root *TreeNode, result *int) int {
-	if root == nil {
-		return 0
-	}
-	lmax := maxPathSumHelper(root.Left, result)
-	rmax := maxPathSumHelper(root.Right, result)
 
-	//max of:
-	//root.Val (no child in path)
-	//root.Val + subtree with max path.
-	max_atmost_single_child := max(max(lmax, rmax)+root.Val, root.Val)
-
-	//max with left right and root.
-	//or max with at most one single.
-	max_top := max(max_atmost_single_child, lmax+rmax+root.Val)
-
-	*result = max(*result, max_top)
-
-	//root can use this only when one path is taken in subtree. Thus path with
-	//single child is used.
-	return max_atmost_single_child
+/*
+Return what value will it be if we add a path going via this root and one of its subtrees. 
+While doing this, maximize result, which is max of result and root+left+right. 
+*/
+func helper(root * TreeNode, result *int) int {
+    if root == nil {
+        return 0 
+    }
+    
+    lmax := helper(root.Left, result) 
+    rmax := helper(root.Right, result)
+    
+    //So at this node, we could have max value or path sum to be equal to
+    //sum of this node + left and right. 
+    *result = max(*result, lmax + rmax + root.Val)
+    
+    //But if we contribute to a path sum at above levels, we could only use 
+    //either left or right subtree path. Ensure we dont go negative
+    return max(0, root.Val + max(lmax, rmax))
 }
 
 func max(a, b int) int {
-	if a > b {
-		return a
-	}
-	return b
+    if a > b {
+        return a
+    } 
+    return b 
 }
