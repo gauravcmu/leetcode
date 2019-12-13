@@ -10,7 +10,7 @@ package loop_ll
 
 //start with fast pointing to next node of head.
 //slow pointing to head.
-//move fast two places and slow one. 
+//move fast two places and slow one.
 func hasCycle(head *ListNode) bool {
 	if head == nil {
 		return false
