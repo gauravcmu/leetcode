@@ -13,7 +13,7 @@ func zigzagLevelOrder(root *TreeNode) [][]int {
 
 	if root == nil {
 		return [][]int{}
-		
+
 	}
 
 	q1.enqueue(root)
