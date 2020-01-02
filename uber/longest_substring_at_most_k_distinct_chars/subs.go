@@ -10,7 +10,7 @@ func lengthOfLongestSubstringKDistinct(s string, k int) int {
 		return 0
 	}
 
-	start := 0	
+	start := 0
 	end := 0
 	max := math.MinInt32
 
